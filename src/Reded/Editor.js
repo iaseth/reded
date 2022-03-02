@@ -24,7 +24,7 @@ export default function Editor () {
 	}
 
 	const lines = text.map((lineText, lineNumber) => {
-		return <Line key={lineNumber} {...{lineText, lineNumber}} />;
+		return <Line key={lineNumber} {...{lineText, lineNumber, cursor, setCursor}} />;
 	});
 
 	function handleKeyDown (e) {
