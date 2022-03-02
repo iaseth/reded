@@ -1,5 +1,6 @@
 
 .Editor {
+	@apply max-w-4xl mx-auto;
 	@apply bg-white;
 	@apply text-slate-800 text-sm font-mono select-none outline-none;
 }
