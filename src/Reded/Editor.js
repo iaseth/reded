@@ -16,6 +16,11 @@ export default function Editor () {
 	]);
 
 	const [cursor, setCursor] = React.useState({x: 0, y: 0});
+	const cursorStyle = {
+		left: (26 + cursor.x * 9) + "px",
+		top: (cursor.y * 36) + "px"
+	};
+
 	function setX (nx) {
 		let ny = cursor.y;
 		if (nx < 0) {
@@ -71,19 +76,19 @@ export default function Editor () {
 			switch (keyCode) {
 				case 37:
 					// left arrow
-					x -= 1; setX(x);
+					setX(x - 1);
 					break;
 				case 38:
 					// up arrow
-					y -= 1; setY(y);
+					setY(y - 1);
 					break;
 				case 39:
 					// right arrow
-					x += 1; setX(x);
+					setX(x + 1);
 					break;
 				case 40:
 					// down arrow
-					y += 1; setY(y);
+					setY(y + 1);
 					break;
 				default:
 					// nothing happens here
@@ -100,6 +105,7 @@ export default function Editor () {
 				<span>{cursor.x}</span>
 			</header>
 			<div className="EditorBody">
+				<div className="Cursor" style={cursorStyle}></div>
 				{lines}
 			</div>
 		</div>
