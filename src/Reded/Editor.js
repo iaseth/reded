@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Cursor from './Cursor';
 import Line from './Line';
 
 import './Editor.css';
@@ -16,10 +17,6 @@ export default function Editor () {
 	]);
 
 	const [cursor, setCursor] = React.useState({x: 0, y: 0});
-	const cursorStyle = {
-		left: (26 + cursor.x * 9) + "px",
-		top: (cursor.y * 36) + "px"
-	};
 
 	function setX (nx) {
 		let ny = cursor.y;
@@ -105,7 +102,7 @@ export default function Editor () {
 				<span>{cursor.x}</span>
 			</header>
 			<div className="EditorBody">
-				<div className="Cursor" style={cursorStyle}></div>
+				<Cursor {...cursor} />
 				{lines}
 			</div>
 		</div>
