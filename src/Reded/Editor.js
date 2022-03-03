@@ -16,10 +16,43 @@ export default function Editor () {
 	]);
 
 	const [cursor, setCursor] = React.useState({x: 0, y: 0});
-	function setCursorProperly (nx, ny) {
-		if (nx < 0) nx = 0;
-		if (ny < 0) ny = 0;
-		if (ny >= text.length) ny = text.length - 1;
+	function setX (nx) {
+		let ny = cursor.y;
+		if (nx < 0) {
+			if (ny > 0) {
+				// go to previous line
+				ny -= 1;
+				nx = text[ny].length - 1;
+			} else {
+				nx = 0;
+			}
+		} else if (nx >= text[cursor.y].length) {
+			if (ny + 1 < text.length) {
+				// go to next line
+				ny += 1;
+				nx = 0;
+			} else {
+				nx = text[ny].length - 1;
+			}
+		}
+		setCursor({x: nx, y: ny});
+	}
+
+	function setY (ny) {
+		let nx = cursor.x;
+		if (ny < 0) {
+			// move cursor to top-left
+			ny = 0;
+			nx = 0;
+		} else if (ny < text.length) {
+			if (nx >= text[ny].length) {
+				nx = text[ny].length - 1;
+			}
+		} else {
+			// move cursor to bottom-right
+			ny = text.length - 1;
+			nx = text[ny].length - 1;
+		}
 		setCursor({x: nx, y: ny});
 	}
 
@@ -28,8 +61,9 @@ export default function Editor () {
 	});
 
 	function handleKeyDown (e) {
-		const key = e.key;
 		const keyCode = e.keyCode;
+		// const key = e.key;
+
 		if (keyCode >= 36 && keyCode <= 40) {
 			e.preventDefault();
 
@@ -37,20 +71,22 @@ export default function Editor () {
 			switch (keyCode) {
 				case 37:
 					// left arrow
-					x -= 1;
-					setCursorProperly(x, y); break;
+					x -= 1; setX(x);
+					break;
 				case 38:
 					// up arrow
-					y -= 1;
-					setCursorProperly(x, y); break;
+					y -= 1; setY(y);
+					break;
 				case 39:
 					// right arrow
-					x += 1;
-					setCursorProperly(x, y); break;
+					x += 1; setX(x);
+					break;
 				case 40:
 					// down arrow
-					y += 1;
-					setCursorProperly(x, y); break;
+					y += 1; setY(y);
+					break;
+				default:
+					// nothing happens here
 			}
 			return;
 		}
